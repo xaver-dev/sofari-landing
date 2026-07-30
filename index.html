@@ -191,7 +191,7 @@ img{max-width:100%;height:auto;display:block}
 .block p{margin:0;color:var(--muted);font-size:16px}
 .story-more{margin-top:48px;display:flex;flex-wrap:wrap;align-items:center;gap:18px 26px}
 .story-more p{margin:0;color:var(--muted);font-size:15px;max-width:26em}
-@media (max-width:880px){.story-grid,.feat-head,.band-grid{grid-template-columns:1fr;gap:32px}.block{grid-template-columns:1fr;gap:8px}}
+@media (max-width:880px){.story-grid,.feat-head{grid-template-columns:1fr;gap:32px}.block{grid-template-columns:1fr;gap:8px}}
 
 .craft{padding:0 0 104px;background:var(--sand)}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
@@ -222,10 +222,19 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
   .stage-copy{max-width:none;top:17svh}
   .stage-cta{right:20px;left:20px;bottom:13svh;align-items:stretch}
   .stage-cta .btn{justify-content:center}
-  .find{width:54vw;bottom:11%}
-  #b1,#b2{width:74%}
-  #b3{left:10%;width:82%}
+  .find{width:min(300px,54vw);bottom:7%}
+  /* Buesche ueber die Hoehe skalieren: an der Breite gemessen werden sie auf
+     schmalen Geraeten zu flach und geben das Sofa frei. */
+  .bush{bottom:-2%}
+  .bush img{width:auto;height:100%}
+  #b1,#b2{width:auto;height:30svh}
+  #b3{left:10%;width:auto;height:33svh}
   .topbar .btn{display:none}
+}
+@media (max-width:880px) and (orientation:landscape){
+  .find{width:min(210px,30vw);bottom:5%}
+  #b1,#b2{height:44svh}
+  #b3{height:48svh}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -693,8 +702,6 @@ if(hasGsap){
   gsap.timeline({defaults:{ease:"power3.out"}})
     .to(".line-inner",{yPercent:0,duration:0.9,stagger:0.09},0.15)
     .to(".stage-copy .lead",{y:0,opacity:1,duration:0.7},0.5);
-  gsap.to("#band-scene",{yPercent:-8,ease:"none",
-    scrollTrigger:{trigger:"#band",start:"top bottom",end:"bottom top",scrub:true}});
   gsap.to("#close-net",{rotation:2.5,transformOrigin:"50% 90%",yoyo:true,repeat:-1,duration:2.8,ease:"sine.inOut"});
   if(window.matchMedia("(pointer:fine)").matches){
     document.querySelectorAll(".btn").forEach(function(b){
