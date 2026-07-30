@@ -220,21 +220,30 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
   .scene{background-image:url(assets/scene-tree-sm.webp);background-size:auto 58%;background-position:52% bottom}
   .stagewrap{height:260svh}
   .stage-copy{max-width:none;top:17svh}
-  .stage-cta{right:20px;left:20px;bottom:13svh;align-items:stretch}
-  .stage-cta .btn{justify-content:center}
-  .find{width:min(300px,54vw);bottom:7%}
+  /* Buttons ans untere Ende und nebeneinander, damit sie das Sofa freilassen.
+     max() haelt sie ueber der Gestenleiste randloser Geraete. */
+  .stage-cta{left:16px;right:16px;bottom:max(8px,calc(env(safe-area-inset-bottom,0px) - 18px));
+    flex-direction:row;align-items:stretch;gap:10px}
+  .stage-cta .btn{flex:1 1 0;justify-content:center;text-align:center;
+    padding:9px 8px;font-size:10px;letter-spacing:.06em;line-height:1.35}
+  .find{width:min(260px,46vw);bottom:max(6%,46px)}
   /* Buesche ueber die Hoehe skalieren: an der Breite gemessen werden sie auf
      schmalen Geraeten zu flach und geben das Sofa frei. */
   .bush{bottom:-2%}
   .bush img{width:auto;height:100%}
-  #b1,#b2{width:auto;height:30svh}
-  #b3{left:10%;width:auto;height:33svh}
+  #b1,#b2{width:auto;height:25.5svh}
+  #b3{left:10%;width:auto;height:28.5svh}
   .topbar .btn{display:none}
 }
+/* Sehr schmale Geraete: Schrift eine Stufe kleiner, damit "Try it in your
+   browser" einzeilig bleibt und die Buttons nicht in das Sofa wachsen. */
+@media (max-width:400px){
+  .stage-cta .btn{font-size:9px;letter-spacing:.04em}
+}
 @media (max-width:880px) and (orientation:landscape){
-  .find{width:min(210px,30vw);bottom:5%}
-  #b1,#b2{height:44svh}
-  #b3{height:48svh}
+  .find{width:min(170px,24vw);bottom:13%}
+  #b1,#b2{height:44.5svh}
+  #b3{height:47.5svh}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
