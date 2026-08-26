@@ -155,12 +155,14 @@ img{max-width:100%;height:auto;display:block}
   display:inline-block;margin-bottom:18px;background:var(--green-wash);padding:6px 11px;border-radius:999px}
 .tile h3{margin-bottom:9px}
 .tile p{color:var(--muted);font-size:15.5px;margin:0}
-.tile-wide{grid-column:1/3;display:flex;gap:26px;align-items:center;background:var(--green-dark);border-color:var(--green-dark)}
-.tile-wide .tx{flex:1;min-width:0}
-.tile-wide h3{color:var(--creme)}
-.tile-wide p{color:rgba(247,244,239,.75)}
-.tile-wide .n{background:rgba(247,244,239,.15);color:rgba(247,244,239,.85)}
-.tile-wide img{width:168px;height:168px;object-fit:cover;border-radius:16px;flex:none;border:2px solid rgba(247,244,239,.25)}
+.tile-hero{grid-column:span 2;background:var(--green-dark);border-color:var(--green-dark);
+  display:flex;flex-direction:column;justify-content:center}
+.tile-hero h3{color:var(--creme)}
+.tile-hero p{color:rgba(247,244,239,.78);font-size:16.5px;max-width:46em}
+.tile-hero .n{background:rgba(247,244,239,.15);color:rgba(247,244,239,.85)}
+.tile-photo{grid-column:span 2;display:flex;gap:26px;align-items:center}
+.tile-photo .tx{flex:1;min-width:0}
+.tile-photo img{width:168px;height:168px;object-fit:cover;border-radius:16px;flex:none;border:1px solid var(--line)}
 .tile-search{grid-column:1/-1;display:flex;gap:26px;align-items:center;background:var(--green);border-color:var(--green)}
 .tile-search .tx{flex:1;min-width:0}
 .tile-search h3{color:var(--creme)}
@@ -173,8 +175,9 @@ img{max-width:100%;height:auto;display:block}
 .promise-foot{margin-top:14px;font-size:15px;color:var(--muted);max-width:52em}
 @media (max-width:760px){
   .feat-grid{grid-template-columns:1fr 1fr}
-  .tile-wide,.tile-search{grid-column:1/-1;flex-direction:column;align-items:stretch}
-  .tile-wide img,.tile-search img{width:100%;height:150px}
+  .tile-hero,.tile-key,.tile-photo,.tile-search{grid-column:1/-1}
+  .tile-photo,.tile-search{flex-direction:column;align-items:stretch}
+  .tile-photo img,.tile-search img{width:100%;height:150px}
 }
 
 
@@ -296,7 +299,7 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
           <span class="line"><span class="line-inner" data-i18n="hero_l1">Geh auf</span></span>
           <span class="line"><span class="line-inner" data-i18n="hero_l2"><em>Möbel-Safari.</em></span></span>
         </h1>
-        <p class="lead" data-i18n="hero_lead">Fotografiere deinen Raum und setze Möbel direkt hinein. Du siehst sofort, ob das Sofa, der Schrank oder die Lampe wirklich passt — in Größe, Farbe und Stil.</p>
+        <p class="lead" data-i18n="hero_lead">Fotografiere deinen Raum und setze Möbel direkt hinein. Du siehst sofort, ob das Sofa, der Schrank oder die Lampe wirklich passt — in Größe, Farbe und Stil. Oder lass die KI den ganzen Raum in deinem Stil einrichten.</p>
       </div>
     </div>
 
@@ -336,7 +339,21 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
     <h2 class="reveal" data-i18n="feat_h2">Was die App kann</h2>
     <div class="feat-grid reveal">
 
-      <div class="tile tile-wide">
+      <div class="tile tile-hero">
+        <div class="tx">
+          <span class="n" data-i18n="tsg_n">Stil-Generator</span>
+          <h3 data-i18n="tsg_h">Ganzer Raum auf Knopfdruck</h3>
+          <p data-i18n="tsg_p">Stil wählen, und die KI richtet den fotografierten Raum komplett ein — sechs Stile, vier Raumtypen. Unter jedem Entwurf stehen echte, kaufbare Möbel mit Preis und Shop-Link, farblich zum Entwurf passend ausgewählt.</p>
+        </div>
+      </div>
+
+      <div class="tile tile-key">
+        <span class="n" data-i18n="tms_n">Maßstab</span>
+        <h3 data-i18n="tms_h">Zentimetergenau statt geschätzt</h3>
+        <p data-i18n="tms_p">Eine Messlinie über etwas Bekanntes ziehen — Fenster, Tür — und die App rechnet Pixel pro Zentimeter. Das Möbel steht danach in genau der Größe im Bild, in der es geliefert wird. Zwanzig Zentimeter entscheiden, ob man noch zum Fenster kommt.</p>
+      </div>
+
+      <div class="tile tile-photo">
         <div class="tx">
           <span class="n" data-i18n="t1n">Freistellen</span>
           <h3 data-i18n="t1h">Automatisch sauber</h3>
@@ -467,16 +484,16 @@ var CONFIG = {
   mail:         "kontakt@sofari.app",
   steps: [
     {img:"shots/01.webp", en:"shots/en-01.webp", h:"Raum aufnehmen",        p:"Fotografiere dein Zimmer oder wähle ein Bild aus der Galerie."},
-    {img:"shots/02.webp", en:"shots/en-02.webp", h:"Möbel aussuchen",       p:"Aus dem Katalog vieler Shops, per eigenem Foto oder aus der Galerie."},
+    {img:"shots/02.webp", en:"shots/en-02.webp", h:"Raum und Möbel wählen",  p:"Wohn-, Schlaf-, Ess- oder Arbeitszimmer angeben — dann aus dem Katalog, per eigenem Foto oder aus der Galerie."},
     {img:"shots/03.webp", en:"shots/en-03.webp", h:"Automatisch freistellen",p:"Sofari löst das Möbelstück sauber vom Hintergrund — ohne Handarbeit."},
-    {img:"shots/04.webp", en:"shots/en-04.webp", h:"Platzieren und drehen", p:"Ziehen, zoomen, drehen, spiegeln — ausgewählte Möbel sogar in 3D."},
+    {img:"shots/04.webp", en:"shots/en-04.webp", h:"Platzieren und einmessen",p:"Ziehen, zoomen, drehen, spiegeln — und per Messlinie auf die echte Größe bringen. Ausgewählte Möbel sogar in 3D."},
     {img:"shots/05.webp", en:"shots/en-05.webp", h:"Gefunden.",             p:"Das Stück steht maßstabsgetreu in deinem Raum. Speichern, teilen, kaufen."}
   ],
   steps_en: [
     {h:"Capture the room",        p:"Photograph your room or pick an image from your gallery."},
-    {h:"Track down a piece",      p:"From many shops' catalogues, your own photo or your gallery."},
+    {h:"Room and piece",          p:"Say which room it is — living, bed, dining or home office — then pick from the catalogue, your own photo or your gallery."},
     {h:"Cut it out automatically",p:"Sofari lifts the piece off its background — no manual work."},
-    {h:"Place it and turn it",    p:"Drag, zoom, rotate, mirror — selected furniture even in 3D."},
+    {h:"Place it and measure it", p:"Drag, zoom, rotate, mirror — and set the real size with a measuring line. Selected pieces even in 3D."},
     {h:"Found it.",               p:"The piece stands true to scale in your room. Save it, share it, buy it."}
   ]
 };
@@ -495,10 +512,14 @@ var I18N={
     _title:"Sofari — Go on a furniture safari",
     nav_demo:"Open demo", nav_store:"Play Store",
     hero_l1:"Go on a", hero_l2:"<em>furniture safari.</em>",
-    hero_lead:"Photograph your room and drop furniture straight into it. See instantly whether the sofa, the wardrobe or the lamp really fits — in size, colour and style.",
+    hero_lead:"Photograph your room and drop furniture straight into it. See instantly whether the sofa, the wardrobe or the lamp really fits — in size, colour and style. Or let the AI furnish the whole room in your style.",
     cta_store:"View on Google Play", cta_demo:"Try it in your browser",
     scrollhint:"Scroll to search", steps_h2:"From photo to finished room",
     feat_eye:"Features", feat_h2:"What the app can do",
+    tsg_n:"Style generator", tsg_h:"A whole room, in one tap",
+    tsg_p:"Pick a style and the AI furnishes your photographed room — six styles, four room types. Underneath each design: real, purchasable furniture with price and shop link, matched to the design's colours.",
+    tms_n:"Scale", tms_h:"Real size, not guesswork",
+    tms_p:"Drag a measuring line across something you know — a window, a door — and the app works out pixels per centimetre. The piece then sits in the photo at exactly the size it will arrive in. Twenty centimetres decide whether you can still walk to the window.",
     t1n:"Cut-out",t1h:"Clean automatically",t1p:"Sofari lifts the piece off its background by itself — no manual retouching.",
     t2n:"Live AR",t2h:"True to scale in your room",t2p:"Place selected pieces in real size through your camera.",
     t3n:"3D",t3h:"From every angle",t3p:"Rotate selected furniture and view it from any side.",
