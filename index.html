@@ -9,11 +9,9 @@
 <meta property="og:title" content="Sofari — Go on a furniture safari">
 <meta property="og:description" content="See furniture in your own room before you buy.">
 <meta property="og:image" content="assets/icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="assets/fonts.css">
+<script defer src="assets/js/gsap.min.js"></script>
+<script defer src="assets/js/ScrollTrigger.min.js"></script>
 <style>
 :root{
   --green:#1f6f5f; --green-dark:#185748; --green-wash:rgba(31,111,95,.07);
@@ -236,6 +234,31 @@ img{max-width:100%;height:auto;display:block}
 .close img.net{width:min(400px,100%);margin-inline:auto;will-change:transform}
 .close .actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:32px}
 @media (max-width:880px){.close-grid{grid-template-columns:1fr;gap:32px}}
+
+/* ---------------- Rechtliches ---------------- */
+.legal{padding:92px 0;background:var(--creme);border-top:1px solid var(--line);scroll-margin-top:100px}
+.legal h2{margin-bottom:24px}
+.legal > .wrap > p{max-width:70ch;color:var(--muted)}
+.legal h3{margin:24px 0 8px;font-size:19px;line-height:1.35}
+.klapp{margin:0 0 16px;border:1px solid var(--line);border-radius:18px;background:var(--card);
+  overflow:hidden;scroll-margin-top:100px;font-family:var(--body)}
+.klapp > summary{list-style:none;cursor:pointer;padding:20px 22px;display:flex;align-items:center;
+  justify-content:space-between;gap:18px}
+.klapp > summary::-webkit-details-marker{display:none}
+.klapp > summary:hover{background:var(--creme)}
+.klapp > summary:focus-visible{outline:3px solid var(--green);outline-offset:-3px}
+.klapp .titel{font-size:18px;font-weight:500;color:var(--ink)}
+.klapp .hinweis{display:block;margin-top:4px;font-size:14px;font-weight:400;color:var(--muted)}
+.klapp .pfeil{flex:none;width:12px;height:12px;border-right:2px solid var(--green);
+  border-bottom:2px solid var(--green);transform:rotate(45deg);margin-right:4px;transition:transform .15s ease}
+.klapp[open] .pfeil{transform:rotate(-135deg)}
+.klapp .inhalt{padding:0 22px 24px;border-top:1px solid var(--line);font-size:16px;line-height:1.75;
+  color:var(--ink);overflow-wrap:anywhere}
+.klapp .inhalt > *{max-width:70ch}
+.klapp .inhalt h3:first-child{margin-top:24px}
+.klapp .inhalt > :last-child{margin-bottom:0}
+@media (max-width:560px){.legal{padding:72px 0}}
+@media (prefers-reduced-motion:reduce){.klapp .pfeil{transition:none}}
 
 footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgba(247,244,239,.14)}
 .foot{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;
@@ -460,6 +483,55 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
   </div>
 </section>
 
+  <section class="legal" id="recht">
+    <div class="wrap">
+      <h2 data-i18n="legal_h2">Rechtliches</h2>
+      <p style="margin:0 0 18px" data-i18n="legal_intro">Sofari führt keine Nutzerkonten und speichert deine Raumfotos nicht dauerhaft. Die Einzelheiten stehen hier:</p>
+
+      <details class="klapp" id="datenschutz">
+        <summary>
+          <span><span class="titel" data-i18n="legal_privacy_title">Datenschutzerklärung</span><span class="hinweis" data-i18n="legal_privacy_note">Was mit deinen Fotos passiert, welche Dienste beteiligt sind, deine Rechte</span></span>
+          <span class="pfeil" aria-hidden="true"></span>
+        </summary>
+        <div class="inhalt" lang="de">
+
+      <h3>1. Verantwortlicher</h3>
+      <p>Xaver Gerhartz<br>
+      E-Mail: kontakt@sofari.app</p>
+
+      <h3>2. Diese Webseite</h3>
+      <p>Diese Seite ist eine reine Informations-/Demo-Seite. Beim Aufruf werden durch den Hosting-Anbieter technisch notwendige Server-Logdaten verarbeitet (u.&nbsp;a. IP-Adresse, Datum/Uhrzeit, abgerufene Seite), um die Auslieferung der Seite sicherzustellen und die Sicherheit zu gewährleisten. Rechtsgrundlage: Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO (berechtigtes Interesse). Es werden keine Tracking-Cookies und kein Webtracking eingesetzt.</p>
+
+      <h3>3. Kontaktaufnahme</h3>
+      <p>Wenn du uns per E-Mail kontaktierst, verarbeiten wir deine Angaben ausschließlich zur Bearbeitung der Anfrage. Rechtsgrundlage: Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b und f DSGVO.</p>
+
+      <h3>4. Die Sofari-App / Web-Demo</h3>
+      <p>In der Anwendung selbst verarbeitet Sofari ausschließlich Daten, die du aktiv bereitstellst (Raumfotos, Produktbilder, eingefügte Shop-Links, Suchkriterien) – ausschließlich zur Visualisierung und Produktsuche. Es werden keine Nutzerkonten geführt und keine Fotos dauerhaft gespeichert; Bilder werden nur für die Dauer der Verarbeitung genutzt. Verlauf und Favoriten bleiben auf deinem Gerät.</p>
+      <p>Je nach Funktion kommen Dienstleister zum Einsatz: Server-Hosting (Render.com, USA); beim Stil-Generator erzeugt <strong>Cloudflare Workers AI</strong> aus einer verkleinerten Kopie deines Raumfotos den Entwurf; zur Möbelerkennung und beim optionalen Raum-Check wird das Bild an ein KI-Sichtmodell übermittelt (<strong>Groq</strong>, <strong>Cloudflare</strong> oder <strong>Google Gemini</strong>, je nach Verfügbarkeit); die Produktsuche und – bei der Funktion „Günstigere Alternative suchen" – die Bildsuche <strong>Google Lens</strong> laufen über Serper.dev; dabei wird nur die Bildadresse des Shops übermittelt, nie dein eigenes Foto. Die Freistellung von Möbelbildern erfolgt auf unserem Server oder über remove.bg. Anbieter außerhalb der EU sind über Standardvertragsklauseln gemäß Art.&nbsp;46 DSGVO abgesichert.</p>
+      <p>Zur Verbesserung der App zählt Sofari rein <strong>anonym</strong>, welche Funktionen und Produkte genutzt werden (nur Kennzeichen und Zähler – <strong>ohne</strong> Nutzer-ID, ohne IP, ohne Personenbezug; Datenbank: Turso, EU). Zur Stabilitätsverbesserung werden anonymisierte Absturz- und Diagnosedaten erfasst (Sentry, EU-Region). Die AR-Ansicht öffnet den Google Scene Viewer (Teil der Google Play-Dienste). Die vollständigen Hinweise je Funktion findest du in der App unter „Datenschutz".</p>
+
+      <h3>5. Deine Rechte</h3>
+      <p>Du hast nach der DSGVO das Recht auf Auskunft (Art.&nbsp;15), Berichtigung (Art.&nbsp;16), Löschung (Art.&nbsp;17), Einschränkung (Art.&nbsp;18) sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde. Zuständig ist u.&nbsp;a. der/die Landesdatenschutzbeauftragte deines Bundeslandes.</p>
+
+      <p style="margin-top:18px"><em>Stand: September 2026</em></p>
+        </div>
+      </details>
+
+      <details class="klapp" id="impressum">
+        <summary>
+          <span><span class="titel" data-i18n="legal_provider_title">Anbieter &amp; Kontakt</span><span class="hinweis" data-i18n="legal_provider_note">Xaver Gerhartz · kontakt@sofari.app</span></span>
+          <span class="pfeil" aria-hidden="true"></span>
+        </summary>
+        <div class="inhalt" lang="de">
+          <p style="margin-top:18px"><strong>Xaver Gerhartz</strong><br>
+          Deutschland<br>
+          E-Mail: kontakt@sofari.app</p>
+          <p style="font-size:13px; color:#6a6258">Sofari ist derzeit ein nicht-kommerzielles Projekt ohne Werbung und ohne Affiliate-Links. Sobald eine kommerzielle Nutzung (z.&nbsp;B. Affiliate-Links) erfolgt, wird hier ein vollständiges Impressum mit ladungsfähiger Anschrift gemäß §&nbsp;5 DDG ergänzt.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
 <footer>
   <div class="wrap">
     <div class="foot">
@@ -468,7 +540,8 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
         <a id="foot-github" href="#" target="_blank" rel="noopener">GitHub</a>
         <a id="foot-instagram" href="#" aria-label="Sofari on Instagram">Instagram</a>
         <a id="foot-mail" href="#" data-i18n="foot_contact">Kontakt</a>
-        <a id="foot-privacy" href="#" data-i18n="foot_privacy">Datenschutz</a>
+        <a id="foot-privacy" href="#datenschutz" data-i18n="foot_privacy">Datenschutz</a>
+        <a href="#impressum" data-i18n="foot_provider">Anbieter</a>
       </nav>
     </div>
   </div>
@@ -479,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function(){
 var CONFIG = {
   playStoreUrl: "https://play.google.com/store/apps/details?id=app.sofari&pcampaignid=web_share",
   demoUrl:      "https://sofari.expo.app/",
-  privacyUrl:   "https://sofari.expo.app/landing/#datenschutz",
+  privacyUrl:   "#datenschutz",
   instagramUrl: "https://www.instagram.com/sofari_app",
   githubUrl:    "https://github.com/xaver-dev",
   mail:         "kontakt@sofari.app",
@@ -533,7 +606,13 @@ var I18N={
     build_ops_label:"Operations",build_ops_h:"Fast updates",build_ops_p:"New features reach the app in minutes rather than days – no new store release needed.",
     close_h2:"Plan your home — and never buy the wrong piece again.",
     more_btn:"More projects", more_note:"Code and further projects are open on GitHub.",
-    foot_contact:"Contact", foot_privacy:"Privacy"
+    legal_h2:"Legal",
+    legal_intro:"Sofari has no user accounts and does not store your room photos permanently. Details are provided below in German:",
+    legal_privacy_title:"Privacy policy (in German)",
+    legal_privacy_note:"What happens to your photos, which services are involved, and your rights",
+    legal_provider_title:"Provider & contact",
+    legal_provider_note:"Xaver Gerhartz · kontakt@sofari.app",
+    foot_contact:"Contact", foot_privacy:"Privacy", foot_provider:"Provider"
   }
 };
 document.querySelectorAll("[data-i18n]").forEach(function(el){
@@ -807,6 +886,20 @@ if(hasGsap){
 }
 
 });
+</script>
+<script>
+  // Ein Link auf #datenschutz soll den Abschnitt auch AUFKLAPPEN, nicht nur
+  // dorthin springen. Ohne das landet man auf einer zugeklappten Überschrift
+  // und muss ein zweites Mal tippen — bei einer Pflichtangabe ein schlechter
+  // Weg. Reine Zugabe: Ohne JavaScript bleibt der Sprung, nur eben zugeklappt.
+  function klappeAuf() {
+    var id = location.hash.slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (el && el.tagName === 'DETAILS') el.open = true;
+  }
+  window.addEventListener('hashchange', klappeAuf);
+  klappeAuf();
 </script>
 </body>
 </html>
