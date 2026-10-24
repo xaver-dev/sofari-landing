@@ -353,7 +353,6 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
         <button class="tool-phone" id="tool-phone" type="button" aria-label="Linkes Drittel: vorheriges Werkzeug. Sonst: nächstes Werkzeug.">
           <span class="tool-screen">
             <img id="tool-image" src="media/tools/moebel-en.webp" width="412" height="892" alt="See furniture in your room">
-            <video id="tool-video" width="412" height="892" muted playsinline preload="none" poster="media/tools/moebel-reel-poster.webp" hidden></video>
             <span class="tool-progress" id="tool-progress" aria-hidden="true"></span>
           </span>
         </button>
@@ -485,7 +484,7 @@ var CONFIG = {
   githubUrl:    "https://github.com/xaver-dev",
   mail:         "kontakt@sofari.app",
   tools: [
-    {key:"moebel", de:{h:"Möbel im Raum ansehen",p:"Maßstabsgetreu ins Raumfoto – ausgewählte sogar in AR",img:"moebel-reel-poster.webp"}, en:{h:"See furniture in your room",p:"True to scale in your photo – selected pieces in AR",img:"moebel-en.webp"},video:"moebel-reel.mp4"},
+    {key:"moebel", de:{h:"Möbel im Raum ansehen",p:"Maßstabsgetreu ins Raumfoto – ausgewählte sogar in AR",img:"moebel.webp"}, en:{h:"See furniture in your room",p:"True to scale in your photo – selected pieces in AR",img:"moebel-en.webp"}},
     {key:"gebraucht", de:{h:"Gebraucht von Kleinanzeigen",p:"Prüf das Möbel aus der Anzeige in deinem Raumfoto",img:"gebraucht.webp"}, en:{h:"Used from Kleinanzeigen",p:"Check the listed item in your room photo",img:"gebraucht-en.webp"}},
     {key:"stil", de:{h:"Raum im Stil einrichten",p:"Die KI richtet deinen Raum in 6 Stilen neu ein",img:"stil.webp"}, en:{h:"Furnish by style",p:"AI refurnishes your room in 6 styles",img:"stil-en.webp"}},
     {key:"budget", de:{h:"Raum fürs Budget einrichten",p:"Nenn deinen Betrag – Sofari findet passende Möbel",img:"budget.webp"}, en:{h:"Furnish on a budget",p:"Name your budget – Sofari finds matching furniture",img:"budget-en.webp"}},
@@ -549,7 +548,7 @@ var player=document.getElementById("tool-player"), phone=document.getElementById
     toolImage=document.getElementById("tool-image"), video=document.getElementById("tool-video"),
     toolList=document.getElementById("tool-list"), progress=document.getElementById("tool-progress"),
     pauseButton=document.getElementById("tool-pause");
-video.muted=true;
+if(video)video.muted=true;
 CONFIG.tools.forEach(function(tool,i){
   var button=document.createElement("button"), mascot=document.createElement("img"), copy=document.createElement("span");
   button.type="button";button.className="tool-choice";
@@ -561,7 +560,7 @@ CONFIG.tools.forEach(function(tool,i){
   var track=document.createElement("span");track.className="tool-progress-track";
   track.appendChild(document.createElement("span")).className="tool-progress-fill";progress.appendChild(track);
 });
-function toolIsVideo(){return !!CONFIG.tools[TOOL.i].video && TOOL.lang==="de" && !TOOL.reduced && !TOOL.failed;}
+function toolIsVideo(){return !!video && !!CONFIG.tools[TOOL.i].video && TOOL.lang==="de" && !TOOL.reduced && !TOOL.failed;}
 function toolMayPlay(){return TOOL.visible && !TOOL.paused && !TOOL.hover && !TOOL.focus && !TOOL.reduced && !document.hidden;}
 function stopToolTimer(){
   if(TOOL.timer!==null){clearTimeout(TOOL.timer);TOOL.timer=null;}
@@ -577,7 +576,7 @@ function syncToolPlayback(){
   progress.classList.toggle("is-video",isVideo);progress.classList.toggle("is-static",TOOL.reduced);
   progress.children[TOOL.i].firstChild.style.animationPlayState=running?"running":"paused";
   updatePauseButton();
-  if(!running){video.pause();return;}
+  if(!running){if(video)video.pause();return;}
   if(isVideo){
     if(!video.getAttribute("src")){
       video.src="media/tools/"+CONFIG.tools[TOOL.i].video;
@@ -588,7 +587,7 @@ function syncToolPlayback(){
       if(error.name!=="AbortError" && version===TOOL.version && toolIsVideo() && toolMayPlay()) videoFallback();
     });
   }else{
-    video.pause();TOOL.started=performance.now();
+    if(video)video.pause();TOOL.started=performance.now();
     TOOL.timer=setTimeout(function(){TOOL.timer=null;TOOL.started=0;showTool(TOOL.i+1);},Math.max(0,5500-TOOL.elapsed));
   }
 }
@@ -600,14 +599,14 @@ function keepToolVisible(){
   }
 }
 function showTool(index){
-  stopToolTimer();video.pause();
-  if(video.getAttribute("src"))video.currentTime=0;
-  video.hidden=true;toolImage.hidden=false;
+  stopToolTimer();
+  if(video){video.pause();if(video.getAttribute("src"))video.currentTime=0;video.hidden=true;}
+  toolImage.hidden=false;
   TOOL.i=(index+CONFIG.tools.length)%CONFIG.tools.length;TOOL.elapsed=0;TOOL.failed=false;TOOL.version++;
   var text=CONFIG.tools[TOOL.i][TOOL.lang];
   toolImage.src="media/tools/"+text.img;toolImage.alt=text.h;
   toolImage.loading=TOOL.i===0?"eager":"lazy";
-  video.setAttribute("aria-label",text.h);
+  if(video)video.setAttribute("aria-label",text.h);
   document.getElementById("tool-title").textContent=text.h;
   document.getElementById("tool-description").textContent=text.p;
   [].forEach.call(toolList.children,function(button,i){
@@ -628,6 +627,7 @@ function videoFallback(){
   video.pause();video.hidden=true;toolImage.hidden=false;TOOL.failed=true;
   syncToolPlayback();
 }
+if(video){
 video.addEventListener("playing",function(){
   if(!toolIsVideo() || !toolMayPlay()){video.pause();return;}
   video.hidden=false;toolImage.hidden=true;
@@ -639,6 +639,7 @@ video.addEventListener("timeupdate",function(){
 });
 video.addEventListener("ended",function(){if(toolIsVideo() && toolMayPlay())showTool(TOOL.i+1);});
 video.addEventListener("error",function(){if(toolIsVideo())videoFallback();});
+}
 phone.addEventListener("click",function(e){
   var bounds=phone.getBoundingClientRect();
   showTool(TOOL.i+(e.detail && e.clientX-bounds.left<bounds.width/3?-1:1));
