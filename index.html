@@ -79,8 +79,6 @@ img{max-width:100%;height:auto;display:block}
 .sky-veil{position:absolute;left:0;right:0;top:0;height:46%;z-index:2;pointer-events:none;
   background:linear-gradient(to bottom,rgba(248,225,181,.94) 12%,rgba(248,225,181,.55) 52%,rgba(248,225,181,0))}
 .midwrap{position:relative;overflow:hidden}
-.leaffall{position:absolute;inset:0;z-index:0;pointer-events:none}
-.leaf{position:absolute;top:0;opacity:.22;will-change:transform;height:auto}
 .midwrap > section{position:relative;z-index:1}
 
 .find{position:absolute;left:49%;bottom:8.5%;transform:translateX(-50%);z-index:4;
@@ -123,66 +121,79 @@ img{max-width:100%;height:auto;display:block}
   animation:sh 1.9s ease-in-out infinite}
 @keyframes sh{0%,100%{transform:scaleY(.4);opacity:.5}50%{transform:scaleY(1);opacity:1}}
 
-/* ---------------- Schritte ---------------- */
-.steps{padding:112px 0 0}
-.stepper{display:grid;grid-template-columns:300px minmax(0,1fr);gap:52px;margin-top:40px;align-items:center}
-.step-frame{border:3px solid var(--ink-line);border-radius:26px;overflow:hidden;background:var(--card);padding:5px}
-.step-frame img{width:100%;height:auto;display:block;border-radius:21px}
-.step-body{max-width:34em}
-.step-no{font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:var(--terra);display:block;margin-bottom:12px}
-.step-body h3{font-size:clamp(22px,3vw,32px);margin-bottom:10px}
-.step-body p{font-size:17px;color:var(--muted);margin:0}
-.step-tabs{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
-.step-tab{touch-action:manipulation;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
-  width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);
-  color:var(--muted);cursor:pointer;transition:background .25s,color .25s,border-color .25s}
-.step-tab:hover{border-color:var(--ink-line)}
-.step-tab.on{background:var(--green);border-color:var(--green);color:var(--creme)}
+/* ---------------- Werkzeuge / Story-Player ---------------- */
+.tools,.compare,.build{padding:112px 0}
+.tools h2{max-width:19em}
+.tools .lead,.build .lead{margin-top:22px}
+.tool-player{display:grid;grid-template-columns:300px minmax(0,1fr);gap:64px;align-items:center;margin-top:44px}
+.tool-device{width:300px;min-width:0;text-align:center}
+.tool-phone{display:block;position:relative;width:100%;padding:6px;border:3px solid var(--ink-line);
+  border-radius:30px;background:var(--card);cursor:pointer;touch-action:manipulation;color:var(--creme)}
+.tool-screen{display:block;position:relative;aspect-ratio:412 / 892;overflow:hidden;border-radius:24px;background:var(--sand)}
+.tool-screen img,.tool-screen video{width:100%;height:100%;object-fit:cover;object-position:top}
+.tool-screen [hidden]{display:none}
+.tool-progress{position:absolute;inset:0 0 auto;padding:14px 10px 30px;display:flex;gap:4px;z-index:2;
+  background:linear-gradient(rgba(0,0,0,.52),transparent);pointer-events:none}
+.tool-progress-track{display:block;flex:1;height:3px;background:rgba(255,255,255,.42);overflow:hidden;border-radius:2px}
+.tool-progress-fill{display:block;height:100%;background:var(--creme);transform:scaleX(0);transform-origin:left}
+.tool-progress-track.is-past .tool-progress-fill{transform:scaleX(1)}
+.tool-progress-track.is-current .tool-progress-fill{animation:tool-fill 5.5s linear both;animation-play-state:paused}
+.tool-progress.is-video .is-current .tool-progress-fill,.tool-progress.is-static .is-current .tool-progress-fill{animation:none}
+.tool-progress.is-static .is-current .tool-progress-fill{transform:scaleX(1)}
+@keyframes tool-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.tool-pause{font-family:var(--mono);font-size:11px;color:var(--green);border:0;background:transparent;
+  padding:12px 20px;min-height:44px;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.tool-list{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tool-choice{position:relative;display:flex;align-items:center;gap:18px;width:100%;padding:16px 20px;
+  border:1px solid transparent;border-radius:18px;background:transparent;text-align:left;color:var(--ink);cursor:pointer}
+.tool-choice[aria-pressed="true"]{background:var(--card);border-color:var(--ink-line)}
+.tool-choice[aria-pressed="true"]::before{content:"";position:absolute;left:0;top:24%;bottom:24%;width:3px;background:var(--green);border-radius:2px}
+.tool-choice img{width:52px;height:52px;flex:none;border-radius:14px}
+.tool-choice strong{display:block;font-family:var(--display);font-size:18px;font-weight:700;line-height:1.25;letter-spacing:-.015em}
+.tool-choice small{display:block;margin-top:5px;color:var(--muted);font-family:var(--body);font-size:15px;line-height:1.5}
+.tool-caption{display:none}
 @media (max-width:820px){
-  .stepper{grid-template-columns:1fr;gap:26px;justify-items:center;text-align:center}
-  .step-frame{width:min(260px,70%)}
-  .step-tabs{justify-content:center}
+  .tool-player{grid-template-columns:minmax(0,1fr);gap:24px;justify-items:center}
+  .tool-device{width:min(280px,76vw)}
+  .tool-caption{display:block;margin-top:6px;min-height:104px}
+  .tool-caption h3{font-size:19px;line-height:1.3}
+  .tool-caption p{font-size:15px;color:var(--muted);margin:9px 0 0;line-height:1.5}
+  .tool-list{flex-direction:row;width:100%;overflow-x:auto;gap:8px;padding:5px 4px 12px;scroll-snap-type:x mandatory;scroll-padding:4px}
+  .tool-choice{flex:0 0 auto;width:auto;max-width:260px;padding:10px 14px;gap:10px;scroll-snap-align:start}
+  .tool-choice img{width:40px;height:40px;border-radius:10px}
+  .tool-choice strong{font-size:16px;max-width:170px}
+  .tool-choice small{display:none}
 }
 
-/* ---------------- Ausrüstung ---------------- */
-.feat{padding:112px 0;position:relative;overflow:hidden}
-.feat-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:60px;align-items:end;margin-bottom:48px}
-.feat-grid{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 26px 32px;
-  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s}
-.tile:hover{transform:translateY(-5px);border-color:var(--ink-line);box-shadow:7px 7px 0 rgba(74,47,24,.12)}
-.tile .n{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);
-  display:inline-block;margin-bottom:18px;background:var(--green-wash);padding:6px 11px;border-radius:999px}
-.tile h3{margin-bottom:9px}
-.tile p{color:var(--muted);font-size:15.5px;margin:0}
-.tile-hero{grid-column:span 2;background:var(--green-dark);border-color:var(--green-dark);
-  display:flex;flex-direction:column;justify-content:center}
-.tile-hero h3{color:var(--creme)}
-.tile-hero p{color:rgba(247,244,239,.78);font-size:16.5px;max-width:46em}
-.tile-hero .n{background:rgba(247,244,239,.15);color:rgba(247,244,239,.85)}
-.tile-photo{grid-column:span 2;display:flex;gap:26px;align-items:center}
-.tile-photo .tx{flex:1;min-width:0}
-.tile-photo img{width:168px;height:168px;object-fit:cover;border-radius:16px;flex:none;border:1px solid var(--line)}
-.tile-search{grid-column:1/-1;display:flex;gap:26px;align-items:center;background:var(--green);border-color:var(--green)}
-.tile-search .tx{flex:1;min-width:0}
-.tile-search h3{color:var(--creme)}
-.tile-search p{color:rgba(247,244,239,.78)}
-.tile-search .n{background:rgba(247,244,239,.16);color:rgba(247,244,239,.88)}
-.tile-search img{width:190px;height:150px;object-fit:cover;border-radius:16px;flex:none;border:2px solid rgba(247,244,239,.25)}
+/* ---------------- Vorher / Nachher ---------------- */
+.compare{background:var(--sand)}
+.compare-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center}
+.compare .lead{margin-top:24px}
+.compare-styles{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.compare-styles button{font-family:var(--mono);font-size:11px;padding:12px 17px;min-height:44px;border:1px solid var(--line);
+  border-radius:999px;background:var(--card);color:var(--muted);cursor:pointer}
+.compare-styles button[aria-pressed="true"]{background:var(--green);color:var(--creme);border-color:var(--green)}
+.compare-figure{width:100%;max-width:440px;justify-self:center;margin:0;min-width:0}
+.compare-slider{--split:50%;position:relative;aspect-ratio:536 / 918;border-radius:22px;overflow:hidden;background:var(--khaki)}
+.compare-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.compare-after{clip-path:inset(0 0 0 var(--split))}
+.compare-line{position:absolute;left:var(--split);top:0;bottom:0;width:2px;background:var(--creme);transform:translateX(-50%);pointer-events:none}
+.compare-grip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;gap:5px;border-radius:50%;background:var(--green);color:var(--creme)}
+.compare-grip::before,.compare-grip::after{content:"";width:6px;height:6px;border:solid currentColor;border-width:0 0 2px 2px;transform:rotate(45deg)}
+.compare-grip::after{transform:rotate(225deg)}
+.compare-label{position:absolute;top:16px;left:16px;padding:5px 10px;border-radius:999px;background:var(--creme);
+  color:var(--ink);font-family:var(--mono);font-size:10px;pointer-events:none}
+.compare-label.after{left:auto;right:16px;background:var(--green);color:var(--creme)}
+.compare-range{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.compare-slider:focus-within .compare-grip{outline:3px solid var(--terra);outline-offset:4px}
+.compare-figure figcaption{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
+@media (max-width:880px){.compare-grid{grid-template-columns:minmax(0,1fr);gap:36px}}
+
 .promise-strip{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:34px;
   font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green-dark)}
 .promise-strip i{display:block;width:5px;height:5px;border-radius:50%;background:var(--terra)}
 .promise-foot{margin-top:14px;font-size:15px;color:var(--muted);max-width:52em}
-@media (max-width:760px){
-  .feat-grid{grid-template-columns:1fr 1fr}
-  .tile-hero,.tile-key,.tile-photo,.tile-search{grid-column:1/-1}
-  .tile-photo,.tile-search{flex-direction:column;align-items:stretch}
-  .tile-photo img,.tile-search img{width:100%;height:150px}
-}
-
-
-
-
 /* ---------------- Hintergrund ---------------- */
 .story{padding:112px 0;background:var(--sand)}
 .story-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:64px;align-items:start}
@@ -194,9 +205,26 @@ img{max-width:100%;height:auto;display:block}
 .block p{margin:0;color:var(--muted);font-size:16px}
 .story-more{margin-top:48px;display:flex;flex-wrap:wrap;align-items:center;gap:18px 26px}
 .story-more p{margin:0;color:var(--muted);font-size:15px;max-width:26em}
-@media (max-width:880px){.story-grid,.feat-head{grid-template-columns:1fr;gap:32px}.block{grid-template-columns:1fr;gap:8px}}
+@media (max-width:880px){.story-grid{grid-template-columns:1fr;gap:32px}.block{grid-template-columns:1fr;gap:8px}}
 
-.craft{padding:0 0 104px;background:var(--sand)}
+/* ---------------- Umsetzung ---------------- */
+.build-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin:44px 0 48px;padding:28px 0;border-block:1px solid var(--line)}
+.build-facts div{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:10px}
+.build-facts dd{font-family:var(--display);font-size:clamp(32px,4vw,44px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.04em;line-height:1.1;margin:0;color:var(--green-dark)}
+.build-facts dt{font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--muted)}
+.build-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.build-card{padding:28px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+.build-card .label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:18px}
+.build-card h3{margin-bottom:12px;line-height:1.25}
+.build-card p{font-size:15px;line-height:1.65;color:var(--muted);margin:0}
+@media (max-width:880px){.build-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.build-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 18px}}
+@media (max-width:560px){
+  .tools,.compare,.story,.build{padding:72px 0}
+  .build-grid{grid-template-columns:minmax(0,1fr)}
+  .build-card{padding:26px}
+  .promise-strip{gap:12px;font-size:10px;letter-spacing:.1em}
+}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
 .chip{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
   padding:11px 17px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--card)}
@@ -252,9 +280,8 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
   html{scroll-behavior:auto}
   .stagewrap{height:auto}
   .stage{position:static;height:auto;min-height:86svh}
-  .bushes,.leaffall,.scrollhint{display:none}
+  .bushes,.scrollhint{display:none}
   .find .glow,.find .shadow{opacity:1}
-  .leaves{display:none}
   .stage-cta{opacity:1;pointer-events:auto;transform:none;position:static;margin:26px auto 0;align-items:center}
   .reveal{opacity:1;transform:none;transition:none}
 }
@@ -315,88 +342,26 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
 </div>
 
 <div class="midwrap" id="midwrap">
-  <div class="leaffall" id="leaffall"></div>
 
-<section class="steps">
+<section class="tools" id="werkzeuge">
   <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="steps_eye">So funktioniert es</p>
-    <h2 class="reveal" data-i18n="steps_h2">Vom Foto bis zum fertigen Raum</h2>
-    <div class="stepper reveal" id="stepper">
-      <div class="step-frame"><img id="step-img" src="shots/01.webp" width="660" height="1290" alt=""></div>
-      <div class="step-body">
-        <span class="step-no" id="step-no">01</span>
-        <h3 id="step-h">Raum aufnehmen</h3>
-        <p id="step-p">Fotografiere dein Zimmer oder wähle ein Bild aus der Galerie.</p>
-        <div class="step-tabs" id="step-tabs" role="tablist" aria-label="Schritte"></div>
+    <p class="eyebrow reveal" data-i18n="tools_eye">Die App</p>
+    <h2 class="reveal" data-i18n="tools_h2">Sechs Werkzeuge rund ums Einrichten</h2>
+    <p class="lead reveal" data-i18n="tools_lead">Vom einzelnen Sofa bis zum ganzen Raum – alles mit dem Foto deines eigenen Zimmers.</p>
+    <div class="tool-player reveal" id="tool-player" role="group" aria-label="Werkzeuge">
+      <div class="tool-device">
+        <button class="tool-phone" id="tool-phone" type="button" aria-label="Linkes Drittel: vorheriges Werkzeug. Sonst: nächstes Werkzeug.">
+          <span class="tool-screen">
+            <img id="tool-image" src="media/tools/moebel-en.webp" width="412" height="892" alt="See furniture in your room">
+            <video id="tool-video" width="412" height="892" muted playsinline preload="none" poster="media/tools/moebel-reel-poster.webp" hidden></video>
+            <span class="tool-progress" id="tool-progress" aria-hidden="true"></span>
+          </span>
+        </button>
+        <button class="tool-pause" id="tool-pause" type="button">Pause</button>
+        <div class="tool-caption" aria-live="off"><h3 id="tool-title"></h3><p id="tool-description"></p></div>
       </div>
+      <div class="tool-list" id="tool-list" role="group" aria-label="Werkzeug auswählen"></div>
     </div>
-  </div>
-</section>
-
-<section class="feat">
-  <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="feat_eye">Funktionen</p>
-    <h2 class="reveal" data-i18n="feat_h2">Was die App kann</h2>
-    <div class="feat-grid reveal">
-
-      <div class="tile tile-hero">
-        <div class="tx">
-          <span class="n" data-i18n="tsg_n">Stil-Generator</span>
-          <h3 data-i18n="tsg_h">Ganzer Raum auf Knopfdruck</h3>
-          <p data-i18n="tsg_p">Stil wählen, und die KI richtet den fotografierten Raum komplett ein — sechs Stile, vier Raumtypen. Unter jedem Entwurf stehen echte, kaufbare Möbel mit Preis und Shop-Link, farblich zum Entwurf passend ausgewählt.</p>
-        </div>
-      </div>
-
-      <div class="tile tile-key">
-        <span class="n" data-i18n="tms_n">Maßstab</span>
-        <h3 data-i18n="tms_h">Zentimetergenau statt geschätzt</h3>
-        <p data-i18n="tms_p">Eine Messlinie über etwas Bekanntes ziehen — Fenster, Tür — und die App rechnet Pixel pro Zentimeter. Das Möbel steht danach in genau der Größe im Bild, in der es geliefert wird. Zwanzig Zentimeter entscheiden, ob man noch zum Fenster kommt.</p>
-      </div>
-
-      <div class="tile tile-photo">
-        <div class="tx">
-          <span class="n" data-i18n="t1n">Freistellen</span>
-          <h3 data-i18n="t1h">Automatisch sauber</h3>
-          <p data-i18n="t1p">Sofari löst das Möbelstück selbstständig vom Hintergrund — ohne Nacharbeit von Hand.</p>
-        </div>
-        <img src="assets/scene-track.jpg" width="640" height="640" loading="lazy" alt="">
-      </div>
-
-      <div class="tile">
-        <span class="n" data-i18n="t2n">Live-AR</span>
-        <h3 data-i18n="t2h">Maßstabsgetreu im Raum</h3>
-        <p data-i18n="t2p">Ausgewählte Stücke per Kamera in echter Größe ins Zimmer stellen.</p>
-      </div>
-
-      <div class="tile">
-        <span class="n" data-i18n="t3n">3D</span>
-        <h3 data-i18n="t3h">Von allen Seiten</h3>
-        <p data-i18n="t3p">Ausgewählte Möbel drehen und aus jedem Winkel betrachten.</p>
-      </div>
-
-      <div class="tile">
-        <span class="n" data-i18n="t4n">Farbe</span>
-        <h3 data-i18n="t4h">Passende Töne finden</h3>
-        <p data-i18n="t4p">Der Farbfinder erkennt die Hauptfarben des Raums, der Raum-Check bewertet die Farbstimmung und schlägt Möbelfarben vor.</p>
-      </div>
-
-      <div class="tile">
-        <span class="n" data-i18n="t5n">Wohn-Wissen</span>
-        <h3 data-i18n="t5h">Kurze Lektionen</h3>
-        <p data-i18n="t5p">Farbregeln, Licht und Stilrichtungen als Quiz-Einheiten — für mehr Spaß beim Lernen.</p>
-      </div>
-
-      <div class="tile tile-search">
-        <div class="tx">
-          <span class="n" data-i18n="t6n">Shop-Suche</span>
-          <h3 data-i18n="t6h">Viele Shops, ein Ort</h3>
-          <p data-i18n="t6p">Sofari durchsucht viele Online-Shops gleichzeitig und legt die Ergebnisse nebeneinander — gefiltert nach Farbe, Preis und Größe.</p>
-        </div>
-        <img src="assets/scene-spot.jpg" width="640" height="640" loading="lazy" alt="">
-      </div>
-
-    </div>
-
     <div class="promise-strip reveal">
       <span data-i18n="p1k">Kein Konto</span><i></i>
       <span data-i18n="p2k">Keine Anmeldung</span><i></i>
@@ -407,19 +372,45 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
   </div>
 </section>
 
+<section class="compare" id="vorher-nachher">
+  <div class="wrap compare-grid">
+    <div class="reveal">
+      <p class="eyebrow" data-i18n="compare_eye">Vorher / Nachher</p>
+      <h2 data-i18n="compare_h2">Ein Raum, drei Stile</h2>
+      <p class="lead" data-i18n="compare_lead">Zieh den Regler: links das Original, rechts ein Entwurf der KI.</p>
+      <div class="compare-styles" role="group" id="compare-styles" aria-label="Stil auswählen">
+        <button type="button" data-style="boho" aria-pressed="true">Boho</button>
+        <button type="button" data-style="midcentury" aria-pressed="false">Mid-Century</button>
+        <button type="button" data-style="modern" aria-pressed="false">Modern</button>
+      </div>
+    </div>
+    <figure class="compare-figure reveal">
+      <div class="compare-slider" id="compare-slider">
+        <img id="compare-before" src="media/vn/vorher.webp" width="536" height="918" alt="Raum vor der Einrichtung" loading="lazy">
+        <img class="compare-after" id="compare-after" src="media/vn/boho.webp" width="536" height="918" alt="KI-Entwurf: Boho" loading="lazy">
+        <span class="compare-line" aria-hidden="true"><span class="compare-grip"></span></span>
+        <span class="compare-label" data-i18n="compare_before">Vorher</span>
+        <span class="compare-label after" data-i18n="compare_after">Nachher</span>
+        <input class="compare-range" id="compare-range" type="range" min="0" max="100" value="50" aria-label="Vorher und Nachher vergleichen">
+      </div>
+      <figcaption data-i18n="compare_caption">Computergenerierte Visualisierung</figcaption>
+    </figure>
+  </div>
+</section>
+
 <section class="story">
   <div class="wrap">
     <p class="eyebrow reveal" data-i18n="st_eye">Hintergrund</p>
     <div class="story-grid reveal">
-      <h2 data-i18n="st_h2">Warum es diese App gibt</h2>
+      <h2 data-i18n="st_h2">Warum es Sofari gibt</h2>
       <div>
-        <p data-i18n="st_p1">Möbel kauft man auf Verdacht. Man sieht ein Sofa im Katalog, misst nach, stellt sich den Rest vor — und liegt oft daneben. <strong>Sofari nimmt diese Unsicherheit weg</strong>, indem es das Stück vor dem Kauf im eigenen Raum zeigt.</p>
+        <p data-i18n="st_p1">Möbel werden oft auf Verdacht gekauft: Im Shop gefällt das Sofa, im eigenen Wohnzimmer wirkt es zu groß, zu dunkel oder passt schlicht nicht. <strong>Sofari macht diese Entscheidung sicher</strong> – das Wunschstück steht vor dem Kauf maßstabsgetreu im eigenen Raum.</p>
       </div>
     </div>
     <div class="blocks">
-      <div class="block reveal"><div class="lbl" data-i18n="b1l">Ausgangspunkt</div><p data-i18n="b1p">Recherche zu bestehenden Lösungen, ehrliche Bewertung der Lücke und ein Funktionsumfang, der sich mit kostenlosen Diensten tragen lässt.</p></div>
-      <div class="block reveal"><div class="lbl" data-i18n="b2l">Entscheidungen</div><p data-i18n="b2p">Technologien nach Kosten und Lizenzbedingungen ausgewählt statt nach Bequemlichkeit. Verzicht auf Konto und Werbung als bewusste Produktentscheidung, nicht als fehlendes Feature.</p></div>
-      <div class="block reveal"><div class="lbl" data-i18n="b3l">Ergebnis</div><p data-i18n="b3p">Eine veröffentlichte Anwendung im Play Store und eine Fassung, die im Browser läuft — vom ersten Entwurf bis zur Store-Freigabe inklusive Datenschutzerklärung, Assets und Beschreibung.</p></div>
+      <div class="block reveal"><div class="lbl" data-i18n="b1l">Ausgangspunkt</div><p data-i18n="b1p">Am Anfang stand eine Marktanalyse: Welche Lösungen gibt es, wo bleiben sie hinter den Erwartungen zurück – und welcher Funktionsumfang lässt sich dauerhaft ohne laufende Kosten betreiben?</p></div>
+      <div class="block reveal"><div class="lbl" data-i18n="b2l">Entscheidungen</div><p data-i18n="b2p">Jede Technologie wurde nach Kosten, Lizenz und Zukunftssicherheit ausgewählt. Kein Konto, keine Werbung, kein Abo – bewusst so entschieden, damit jeder ohne Hürden starten kann.</p></div>
+      <div class="block reveal"><div class="lbl" data-i18n="b3l">Ergebnis</div><p data-i18n="b3p">Seit Juli 2026 im Google Play Store und kontinuierlich weiterentwickelt: sechs Werkzeuge, Updates ohne Store-Wartezeit und eine Web-Version zum direkten Ausprobieren.</p></div>
     </div>
     <div class="story-more reveal">
       <a class="btn" id="more-projects" href="#" target="_blank" rel="noopener">
@@ -430,16 +421,27 @@ footer{padding:34px 0 52px;background:var(--green-dark);border-top:1px solid rgb
   </div>
 </section>
 
-<section class="craft">
-  <div class="wrap reveal">
-    <p class="eyebrow" data-i18n="cr_eye">Umsetzung</p>
-    <h2 data-i18n="cr_h2">Womit gebaut</h2>
-    <div class="chips">
-      <span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">Node.js</span>
-      <span class="chip" data-i18n="c4">Bildverarbeitung</span><span class="chip">AR</span>
-      <span class="chip" data-i18n="c6">Cloud-Infrastruktur</span>
-      <span class="chip" data-i18n="c7">Automatisierte Workflows</span>
-      <span class="chip" data-i18n="c8">KI-gestützte Entwicklung</span>
+<section class="build" id="technik">
+  <div class="wrap">
+    <p class="eyebrow reveal" data-i18n="build_eye">Umsetzung</p>
+    <h2 class="reveal" data-i18n="build_h2">Was dahintersteckt</h2>
+    <p class="lead reveal" data-i18n="build_lead">Konzept, Design, Entwicklung und Betrieb aus einer Hand – mit modernen Werkzeugen und auf Basis kostenloser Dienste umgesetzt.</p>
+    <dl class="build-facts reveal">
+      <div><dt data-i18n="fact_live">live im Play Store (DACH)</dt><dd>07/2026</dd></div>
+      <div><dt data-i18n="fact_models">3D-Modelle in echter Größe</dt><dd>206</dd></div>
+      <div><dt data-i18n="fact_catalogue">Möbel im Budget-Katalog</dt><dd>888</dd></div>
+      <div><dt data-i18n="fact_tests">automatisierte Backend-Tests</dt><dd>285</dd></div>
+    </dl>
+    <div class="build-grid">
+      <article class="build-card reveal"><span class="label" data-i18n="build_scale_label">Maßstab</span><h3 data-i18n="build_scale_h">Zentimetergenau statt geschätzt</h3><p data-i18n="build_scale_p">Eine einfache Messlinie genügt – und jedes Möbel erscheint in seiner echten Größe.</p></article>
+      <article class="build-card reveal"><span class="label" data-i18n="build_cutout_label">Bildverarbeitung</span><h3 data-i18n="build_cutout_h">Automatisch freigestellt</h3><p data-i18n="build_cutout_p">Möbelfotos werden auf dem eigenen Server vom Hintergrund gelöst – schnell und ohne Zusatzkosten.</p></article>
+      <article class="build-card reveal"><span class="label" data-i18n="build_ar_label">3D &amp; AR</span><h3 data-i18n="build_ar_h">Möbel in echter Größe erleben</h3><p data-i18n="build_ar_p">Über 200 Möbel lassen sich in 3D drehen oder per AR direkt ins Zimmer stellen.</p></article>
+      <article class="build-card reveal"><span class="label" data-i18n="build_ai_label">KI</span><h3 data-i18n="build_ai_h">Künstliche Intelligenz mit Augenmaß</h3><p data-i18n="build_ai_p">KI erkennt Möbel auf Fotos und entwirft ganze Räume im Wunschstil – gezielt dort eingesetzt, wo sie echten Nutzen bringt.</p></article>
+      <article class="build-card reveal"><span class="label" data-i18n="build_budget_label">Budget</span><h3 data-i18n="build_budget_h">Passend zum Geldbeutel</h3><p data-i18n="build_budget_p">Aus fast 900 Möbeln von IKEA und POCO stellt Sofari eine Einrichtung zusammen, die ins Budget passt.</p></article>
+      <article class="build-card reveal"><span class="label" data-i18n="build_ops_label">Betrieb</span><h3 data-i18n="build_ops_h">Schnelle Updates</h3><p data-i18n="build_ops_p">Neue Funktionen erreichen die App in Minuten statt Tagen – ganz ohne neue Store-Version.</p></article>
+    </div>
+    <div class="chips reveal">
+      <span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">Docker</span><span class="chip">SQLite</span><span class="chip">sharp</span><span class="chip">WebXR</span><span class="chip">Cloudflare Workers AI</span><span class="chip">Gemini API</span>
     </div>
   </div>
 </section>
@@ -482,19 +484,13 @@ var CONFIG = {
   instagramUrl: "https://www.instagram.com/sofari_app",
   githubUrl:    "https://github.com/xaver-dev",
   mail:         "kontakt@sofari.app",
-  steps: [
-    {img:"shots/01.webp", en:"shots/en-01.webp", h:"Raum aufnehmen",        p:"Fotografiere dein Zimmer oder wähle ein Bild aus der Galerie."},
-    {img:"shots/02.webp", en:"shots/en-02.webp", h:"Raum und Möbel wählen",  p:"Wohn-, Schlaf-, Ess- oder Arbeitszimmer angeben — dann aus dem Katalog, per eigenem Foto oder aus der Galerie."},
-    {img:"shots/03.webp", en:"shots/en-03.webp", h:"Automatisch freistellen",p:"Sofari löst das Möbelstück sauber vom Hintergrund — ohne Handarbeit."},
-    {img:"shots/04.webp", en:"shots/en-04.webp", h:"Platzieren und einmessen",p:"Ziehen, zoomen, drehen, spiegeln — und per Messlinie auf die echte Größe bringen. Ausgewählte Möbel sogar in 3D."},
-    {img:"shots/05.webp", en:"shots/en-05.webp", h:"Gefunden.",             p:"Das Stück steht maßstabsgetreu in deinem Raum. Speichern, teilen, kaufen."}
-  ],
-  steps_en: [
-    {h:"Capture the room",        p:"Photograph your room or pick an image from your gallery."},
-    {h:"Room and piece",          p:"Say which room it is — living, bed, dining or home office — then pick from the catalogue, your own photo or your gallery."},
-    {h:"Cut it out automatically",p:"Sofari lifts the piece off its background — no manual work."},
-    {h:"Place it and measure it", p:"Drag, zoom, rotate, mirror — and set the real size with a measuring line. Selected pieces even in 3D."},
-    {h:"Found it.",               p:"The piece stands true to scale in your room. Save it, share it, buy it."}
+  tools: [
+    {key:"moebel", de:{h:"Möbel im Raum ansehen",p:"Maßstabsgetreu ins Raumfoto – ausgewählte sogar in AR",img:"moebel-reel-poster.webp"}, en:{h:"See furniture in your room",p:"True to scale in your photo – selected pieces in AR",img:"moebel-en.webp"},video:"moebel-reel.mp4"},
+    {key:"gebraucht", de:{h:"Gebraucht von Kleinanzeigen",p:"Prüf das Möbel aus der Anzeige in deinem Raumfoto",img:"gebraucht.webp"}, en:{h:"Used from Kleinanzeigen",p:"Check the listed item in your room photo",img:"gebraucht-en.webp"}},
+    {key:"stil", de:{h:"Raum im Stil einrichten",p:"Die KI richtet deinen Raum in 6 Stilen neu ein",img:"stil.webp"}, en:{h:"Furnish by style",p:"AI refurnishes your room in 6 styles",img:"stil-en.webp"}},
+    {key:"budget", de:{h:"Raum fürs Budget einrichten",p:"Nenn deinen Betrag – Sofari findet passende Möbel",img:"budget.webp"}, en:{h:"Furnish on a budget",p:"Name your budget – Sofari finds matching furniture",img:"budget-en.webp"}},
+    {key:"wandfarbe", de:{h:"Wandfarbe testen",p:"Sieh deine Wände in neuer Farbe, bevor du streichst",img:"wandfarbe.webp"}, en:{h:"Try a wall color",p:"See your walls in a new color before you paint",img:"wandfarbe-en.webp"}},
+    {key:"guenstiger", de:{h:"Günstiger finden",p:"Finde ähnliche Möbel, die weniger kosten",img:"guenstiger.webp"}, en:{h:"Find it cheaper",p:"Find similar furniture that costs less",img:"guenstiger-en.webp"}}
   ]
 };
 
@@ -514,32 +510,28 @@ var I18N={
     hero_l1:"Go on a", hero_l2:"<em>furniture safari.</em>",
     hero_lead:"Photograph your room and drop furniture straight into it. See instantly whether the sofa, the wardrobe or the lamp really fits — in size, colour and style. Or let the AI furnish the whole room in your style.",
     cta_store:"View on Google Play", cta_demo:"Try it in your browser",
-    scrollhint:"Scroll to search", steps_h2:"From photo to finished room",
-    feat_eye:"Features", feat_h2:"What the app can do",
-    tsg_n:"Style generator", tsg_h:"A whole room, in one tap",
-    tsg_p:"Pick a style and the AI furnishes your photographed room — six styles, four room types. Underneath each design: real, purchasable furniture with price and shop link, matched to the design's colours.",
-    tms_n:"Scale", tms_h:"Real size, not guesswork",
-    tms_p:"Drag a measuring line across something you know — a window, a door — and the app works out pixels per centimetre. The piece then sits in the photo at exactly the size it will arrive in. Twenty centimetres decide whether you can still walk to the window.",
-    t1n:"Cut-out",t1h:"Clean automatically",t1p:"Sofari lifts the piece off its background by itself — no manual retouching.",
-    t2n:"Live AR",t2h:"True to scale in your room",t2p:"Place selected pieces in real size through your camera.",
-    t3n:"3D",t3h:"From every angle",t3p:"Rotate selected furniture and view it from any side.",
-    t4n:"Colour",t4h:"Find matching tones",t4p:"The colour finder reads your room's main colours; the room check rates the mood and suggests furniture colours.",
-    t5n:"Home know-how",t5h:"Short lessons",t5p:"Colour rules, light and interior styles as quizzes — learning that stays fun.",
-    t6n:"Shop search",t6h:"Many shops, one place",t6p:"Sofari searches many online shops at once and lays the results side by side — filtered by colour, price and size.",
+    scrollhint:"Scroll to search",
+    tools_eye:"The app", tools_h2:"Six tools for furnishing your home",
+    tools_lead:"From a single sofa to a whole room – all with a photo of your own room.",
+    compare_eye:"Before / after",compare_h2:"One room, three styles",
+    compare_lead:"Drag the slider: the original on the left, an AI design on the right.",
+    compare_before:"Before",compare_after:"After",compare_caption:"Computer-generated visualisation",
     p1k:"No account",p2k:"No sign-in",p3k:"No costs",p4k:"No ads",
     pr_foot:"Your photos are processed for visualisation only and are never stored.",
-    steps_eye:"How it works",
-    p1k:"No account",
-    p2k:"No sign-in",
-    p3k:"No costs",
-    p4k:"No ads",
-    st_eye:"Background", st_h2:"Why this app exists",
-    st_p1:"Furniture is bought on a hunch. You see a sofa in a catalogue, measure twice, imagine the rest — and often get it wrong. <strong>Sofari removes that uncertainty</strong> by showing the piece in your own room before you buy.",
-    b1l:"Starting point",b1p:"Research into existing solutions, an honest look at the gap, and a scope that free services can carry.",
-    b2l:"Decisions",b2p:"Technologies picked by cost and licence terms, not convenience. No account and no ads as a deliberate product decision, not a missing feature.",
-    b3l:"Outcome",b3p:"A published app on Google Play and a version that runs in the browser — from first sketch to store release, including privacy policy, assets and listing.",
-    cr_eye:"Under the hood", cr_h2:"Built with",
-    c4:"Image processing", c6:"Cloud infrastructure", c7:"Automated workflows", c8:"AI-assisted development",
+    st_eye:"Background", st_h2:"Why Sofari exists",
+    st_p1:"Furniture is often bought on a hunch: the sofa looks great in the shop, then turns out too big, too dark or simply wrong at home. <strong>Sofari takes the guesswork out</strong> – the piece stands in your own room, true to scale, before you buy.",
+    b1l:"Starting point",b1p:"It started with a market analysis: which solutions exist, where they fall short – and which feature set can run long-term without ongoing costs?",
+    b2l:"Decisions",b2p:"Every technology was chosen for cost, licence and longevity. No account, no ads, no subscription – a deliberate choice so anyone can start without friction.",
+    b3l:"Outcome",b3p:"On Google Play since July 2026 and continuously developed: six tools, updates without store delays and a web version to try right away.",
+    build_eye:"Under the hood",build_h2:"What is behind it",
+    build_lead:"Concept, design, development and operations from a single hand – built with modern tools on free services.",
+    fact_live:"live on Google Play (DACH)",fact_models:"3D models at real size",fact_catalogue:"pieces in the budget catalogue",fact_tests:"automated backend tests",
+    build_scale_label:"Scale",build_scale_h:"Accurate to the centimetre",build_scale_p:"One simple measuring line – and every piece appears at its real size.",
+    build_cutout_label:"Image processing",build_cutout_h:"Cut out automatically",build_cutout_p:"Furniture photos are separated from their background on Sofari's own server – fast and at no extra cost.",
+    build_ar_label:"3D & AR",build_ar_h:"Furniture at real size",build_ar_p:"More than 200 pieces can be rotated in 3D or placed straight into your room with AR.",
+    build_ai_label:"AI",build_ai_h:"AI where it matters",build_ai_p:"AI recognises furniture in photos and designs whole rooms in your chosen style – used where it adds real value.",
+    build_budget_label:"Budget",build_budget_h:"Fits your budget",build_budget_p:"From almost 900 pieces by IKEA and POCO, Sofari puts together a room that fits your budget.",
+    build_ops_label:"Operations",build_ops_h:"Fast updates",build_ops_p:"New features reach the app in minutes rather than days – no new store release needed.",
     close_h2:"Plan your home — and never buy the wrong piece again.",
     more_btn:"More projects", more_note:"Code and further projects are open on GitHub.",
     foot_contact:"Contact", foot_privacy:"Privacy"
@@ -549,53 +541,146 @@ document.querySelectorAll("[data-i18n]").forEach(function(el){
   var k=el.getAttribute("data-i18n");
   if(!(k in I18N.de)) I18N.de[k]=el.innerHTML;
 });
-var STEP={i:0, lang:"de", timer:null};
-function renderStep(){
-  var s=CONFIG.steps[STEP.i];
-  var t=(STEP.lang==="en")?CONFIG.steps_en[STEP.i]:s;
-  var img=document.getElementById("step-img");
-  var src=(STEP.lang==="en"&&s.en)?s.en:s.img;
-  if(img.getAttribute("src")!==src) img.setAttribute("src",src);
-  img.alt=t.h;
-  document.getElementById("step-no").textContent=(STEP.i+1<10?"0":"")+(STEP.i+1);
-  document.getElementById("step-h").textContent=t.h;
-  document.getElementById("step-p").textContent=t.p;
-  var tabs=document.getElementById("step-tabs").children;
-  for(var k=0;k<tabs.length;k++){
-    tabs[k].classList.toggle("on",k===STEP.i);
-    tabs[k].setAttribute("aria-selected", k===STEP.i?"true":"false");
-  }
+/* ---------- Werkzeuge: Wiedergabe und Pausengruende -------------------- */
+var motionQuery=window.matchMedia("(prefers-reduced-motion: reduce)");
+var TOOL={i:0,lang:"en",visible:false,paused:false,hover:false,focus:false,reduced:motionQuery.matches,
+  elapsed:0,started:0,timer:null,failed:false,version:0};
+var player=document.getElementById("tool-player"), phone=document.getElementById("tool-phone"),
+    toolImage=document.getElementById("tool-image"), video=document.getElementById("tool-video"),
+    toolList=document.getElementById("tool-list"), progress=document.getElementById("tool-progress"),
+    pauseButton=document.getElementById("tool-pause");
+video.muted=true;
+CONFIG.tools.forEach(function(tool,i){
+  var button=document.createElement("button"), mascot=document.createElement("img"), copy=document.createElement("span");
+  button.type="button";button.className="tool-choice";
+  mascot.src="media/mascots/"+tool.key+".webp";mascot.width=52;mascot.height=52;mascot.alt="";mascot.loading="lazy";
+  copy.appendChild(document.createElement("strong"));copy.appendChild(document.createElement("small"));
+  button.appendChild(mascot);button.appendChild(copy);
+  button.addEventListener("click",function(){showTool(i);});
+  toolList.appendChild(button);
+  var track=document.createElement("span");track.className="tool-progress-track";
+  track.appendChild(document.createElement("span")).className="tool-progress-fill";progress.appendChild(track);
+});
+function toolIsVideo(){return !!CONFIG.tools[TOOL.i].video && TOOL.lang==="de" && !TOOL.reduced && !TOOL.failed;}
+function toolMayPlay(){return TOOL.visible && !TOOL.paused && !TOOL.hover && !TOOL.focus && !TOOL.reduced && !document.hidden;}
+function stopToolTimer(){
+  if(TOOL.timer!==null){clearTimeout(TOOL.timer);TOOL.timer=null;}
+  if(TOOL.started){TOOL.elapsed+=performance.now()-TOOL.started;TOOL.started=0;}
 }
-function buildSteps(l){
-  STEP.lang=l;
-  var box=document.getElementById("step-tabs");
-  if(!box.children.length){
-    CONFIG.steps.forEach(function(s,i){
-      var b=document.createElement("button");
-      b.type="button"; b.className="step-tab"; b.setAttribute("role","tab");
-      b.textContent=(i+1<10?"0":"")+(i+1);
-      b.addEventListener("click",function(){ STEP.i=i; renderStep(); hold(); });
-      box.appendChild(b);
+function updatePauseButton(){
+  pauseButton.textContent=TOOL.paused||TOOL.reduced?(TOOL.lang==="de"?"Weiter":"Play"):"Pause";
+  pauseButton.disabled=TOOL.reduced;
+}
+function syncToolPlayback(){
+  stopToolTimer();
+  var running=toolMayPlay(), isVideo=toolIsVideo();
+  progress.classList.toggle("is-video",isVideo);progress.classList.toggle("is-static",TOOL.reduced);
+  progress.children[TOOL.i].firstChild.style.animationPlayState=running?"running":"paused";
+  updatePauseButton();
+  if(!running){video.pause();return;}
+  if(isVideo){
+    if(!video.getAttribute("src")){
+      video.src="media/tools/"+CONFIG.tools[TOOL.i].video;
+      video.load();
+    }
+    var version=TOOL.version, play=video.play();
+    if(play && play.catch) play.catch(function(error){
+      if(error.name!=="AbortError" && version===TOOL.version && toolIsVideo() && toolMayPlay()) videoFallback();
     });
+  }else{
+    video.pause();TOOL.started=performance.now();
+    TOOL.timer=setTimeout(function(){TOOL.timer=null;TOOL.started=0;showTool(TOOL.i+1);},Math.max(0,5500-TOOL.elapsed));
   }
-  renderStep();
 }
-function hold(){ if(STEP.timer){ clearInterval(STEP.timer); STEP.timer=null; } start(); }
-function start(){
-  if(STEP.timer) return;
-  STEP.timer=setInterval(function(){
-    STEP.i=(STEP.i+1)%CONFIG.steps.length; renderStep();
-  }, 4800);
+function keepToolVisible(){
+  if(!window.matchMedia("(max-width:820px)").matches)return;
+  var active=toolList.children[TOOL.i],left=active.offsetLeft-toolList.offsetLeft;
+  if(left<toolList.scrollLeft || left+active.offsetWidth>toolList.scrollLeft+toolList.clientWidth){
+    toolList.scrollTo({left:Math.max(0,left-(toolList.clientWidth-active.offsetWidth)/2),behavior:TOOL.reduced?"auto":"smooth"});
+  }
 }
-(function(){
-  var st=document.getElementById("stepper"); if(!st) return;
-  st.addEventListener("pointerenter",function(){ if(STEP.timer){clearInterval(STEP.timer);STEP.timer=null;} });
-  st.addEventListener("pointerleave",start);
-  new IntersectionObserver(function(es){
-    if(es[0].isIntersecting) start();
-    else if(STEP.timer){ clearInterval(STEP.timer); STEP.timer=null; }
-  },{threshold:0.35}).observe(st);
-})();
+function showTool(index){
+  stopToolTimer();video.pause();
+  if(video.getAttribute("src"))video.currentTime=0;
+  video.hidden=true;toolImage.hidden=false;
+  TOOL.i=(index+CONFIG.tools.length)%CONFIG.tools.length;TOOL.elapsed=0;TOOL.failed=false;TOOL.version++;
+  var text=CONFIG.tools[TOOL.i][TOOL.lang];
+  toolImage.src="media/tools/"+text.img;toolImage.alt=text.h;
+  toolImage.loading=TOOL.i===0?"eager":"lazy";
+  video.setAttribute("aria-label",text.h);
+  document.getElementById("tool-title").textContent=text.h;
+  document.getElementById("tool-description").textContent=text.p;
+  [].forEach.call(toolList.children,function(button,i){
+    var copy=CONFIG.tools[i][TOOL.lang];
+    button.querySelector("strong").textContent=copy.h;button.querySelector("small").textContent=copy.p;
+    button.setAttribute("aria-pressed",i===TOOL.i?"true":"false");
+  });
+  [].forEach.call(progress.children,function(track,i){
+    track.className="tool-progress-track"+(i<TOOL.i?" is-past":"");
+    track.firstChild.style.cssText="";
+  });
+  // Eine neue Bildgeschichte beginnt auch nach direkter Auswahl wieder bei null.
+  void progress.offsetWidth;
+  progress.children[TOOL.i].classList.add("is-current");
+  keepToolVisible();syncToolPlayback();
+}
+function videoFallback(){
+  video.pause();video.hidden=true;toolImage.hidden=false;TOOL.failed=true;
+  syncToolPlayback();
+}
+video.addEventListener("playing",function(){
+  if(!toolIsVideo() || !toolMayPlay()){video.pause();return;}
+  video.hidden=false;toolImage.hidden=true;
+});
+video.addEventListener("timeupdate",function(){
+  if(toolIsVideo() && isFinite(video.duration) && video.duration>0){
+    progress.children[TOOL.i].firstChild.style.transform="scaleX("+Math.min(1,video.currentTime/video.duration)+")";
+  }
+});
+video.addEventListener("ended",function(){if(toolIsVideo() && toolMayPlay())showTool(TOOL.i+1);});
+video.addEventListener("error",function(){if(toolIsVideo())videoFallback();});
+phone.addEventListener("click",function(e){
+  var bounds=phone.getBoundingClientRect();
+  showTool(TOOL.i+(e.detail && e.clientX-bounds.left<bounds.width/3?-1:1));
+});
+phone.addEventListener("keydown",function(e){
+  if(e.key==="ArrowLeft" || e.key==="ArrowRight"){e.preventDefault();showTool(TOOL.i+(e.key==="ArrowLeft"?-1:1));}
+});
+pauseButton.addEventListener("click",function(){TOOL.paused=!TOOL.paused;syncToolPlayback();});
+var desktopPointer=window.matchMedia("(hover:hover) and (pointer:fine)");
+player.addEventListener("pointerenter",function(){if(desktopPointer.matches){TOOL.hover=true;syncToolPlayback();}});
+player.addEventListener("pointerleave",function(){TOOL.hover=false;syncToolPlayback();});
+player.addEventListener("focusin",function(e){if(desktopPointer.matches){TOOL.focus=e.target.matches(":focus-visible");syncToolPlayback();}});
+player.addEventListener("focusout",function(e){if(!player.contains(e.relatedTarget)){TOOL.focus=false;syncToolPlayback();}});
+document.addEventListener("visibilitychange",syncToolPlayback);
+new IntersectionObserver(function(entries){
+  TOOL.visible=entries[0].isIntersecting;syncToolPlayback();
+},{threshold:0}).observe(document.getElementById("werkzeuge"));
+function updateToolMotion(){TOOL.reduced=motionQuery.matches;showTool(TOOL.i);}
+if(motionQuery.addEventListener)motionQuery.addEventListener("change",updateToolMotion);
+else motionQuery.addListener(updateToolMotion);
+
+/* ---------- Vorher / Nachher ------------------------------------------ */
+var compareStyle="boho",compareAfter=document.getElementById("compare-after"),
+    compareRange=document.getElementById("compare-range");
+["boho","midcentury","modern"].forEach(function(style){var image=new Image();image.src="media/vn/"+style+".webp";});
+function updateCompareText(){
+  var en=TOOL.lang==="en";
+  compareRange.setAttribute("aria-label",en?"Compare before and after":"Vorher und Nachher vergleichen");
+  document.getElementById("compare-styles").setAttribute("aria-label",en?"Choose a style":"Stil auswählen");
+  document.getElementById("compare-before").alt=en?"Room before furnishing":"Raum vor der Einrichtung";
+  var name=document.querySelector('[data-style="'+compareStyle+'"]').textContent;
+  compareAfter.alt=(en?"AI design: ":"KI-Entwurf: ")+name;
+}
+document.querySelectorAll("[data-style]").forEach(function(button){
+  button.addEventListener("click",function(){
+    compareStyle=button.getAttribute("data-style");compareAfter.src="media/vn/"+compareStyle+".webp";
+    document.querySelectorAll("[data-style]").forEach(function(b){b.setAttribute("aria-pressed",b===button?"true":"false");});
+    updateCompareText();
+  });
+});
+compareRange.addEventListener("input",function(){document.getElementById("compare-slider").style.setProperty("--split",compareRange.value+"%");});
+
 function setLang(l){
   document.documentElement.lang=l;
   document.title=I18N[l]._title;
@@ -603,9 +688,13 @@ function setLang(l){
   document.querySelectorAll("[data-i18n]").forEach(function(el){
     var v=d[el.getAttribute("data-i18n")];
     if(v===undefined) return;
-    if(v.indexOf("<")>-1) el.innerHTML=v; else el.textContent=v;
+    if(v.indexOf("<")>-1 || v.indexOf("&")>-1) el.innerHTML=v; else el.textContent=v;
   });
-  buildSteps(l);
+  TOOL.lang=l;
+  player.setAttribute("aria-label",l==="en"?"Tools":"Werkzeuge");
+  toolList.setAttribute("aria-label",l==="en"?"Choose a tool":"Werkzeug auswählen");
+  phone.setAttribute("aria-label",l==="en"?"Left third: previous tool. Otherwise: next tool.":"Linkes Drittel: vorheriges Werkzeug. Sonst: nächstes Werkzeug.");
+  showTool(TOOL.i);updateCompareText();
   document.querySelectorAll(".lang-btn").forEach(function(b){
     b.classList.toggle("on", b.getAttribute("data-lang")===l);
   });
@@ -613,7 +702,8 @@ function setLang(l){
 document.querySelectorAll(".lang-btn").forEach(function(b){
   b.addEventListener("click", function(){ setLang(b.getAttribute("data-lang")); });
 });
-setLang("en");
+var browserLang=(navigator.languages && navigator.languages[0]) || navigator.language || "";
+setLang(browserLang.toLowerCase().indexOf("de")===0?"de":"en");
 
 var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 var hasGsap=!reduced && window.gsap && window.ScrollTrigger;
@@ -694,37 +784,6 @@ if(hasGsap){
 stageDraw(0);
 (function loop(){ requestAnimationFrame(loop); if(P>0.55) stageDraw(P); })();
 
-/* ---------- Blätter: fallen hinter den mittleren Abschnitten ---------- */
-(function(){
-  var wrap=document.getElementById("midwrap"), box=document.getElementById("leaffall");
-  if(!wrap||!box) return;
-  var SRC=["assets/leaf-1.webp","assets/leaf-2.webp","assets/leaf-3.webp","assets/leaf-4.webp"];
-  var N=window.innerWidth<760?7:14, L=[];
-  for(var i=0;i<N;i++){
-    var img=new Image();
-    img.src=SRC[i%4]; img.alt=""; img.className="leaf"; img.loading="lazy";
-    img.style.width=(26+Math.random()*40)+"px";
-    img.style.left=(2+Math.random()*94)+"%";
-    box.appendChild(img);
-    L.push({el:img, off:Math.random(), sp:0.9+Math.random()*1.4,
-            sway:24+Math.random()*70, spin:90+Math.random()*300, ph:Math.random()*6.3});
-  }
-  var tick=false;
-  function draw(){
-    var span=wrap.offsetHeight;
-    var p=(window.scrollY-(wrap.offsetTop-window.innerHeight))/(span+window.innerHeight);
-    for(var i=0;i<L.length;i++){
-      var l=L[i], t=((l.off+p*l.sp)%1+1)%1;
-      var y=t*(span+160)-80, x=Math.sin(t*6.283+l.ph)*l.sway;
-      l.el.style.transform="translate3d("+x.toFixed(1)+"px,"+y.toFixed(1)+"px,0) rotate("+(t*l.spin).toFixed(0)+"deg)";
-    }
-    tick=false;
-  }
-  window.addEventListener("scroll",function(){ if(tick)return; tick=true; requestAnimationFrame(draw); },{passive:true});
-  window.addEventListener("resize",draw);
-  draw();
-})();
-
 /* ---------- GSAP: Eröffnung und Mikrobewegung ------------------------- */
 if(hasGsap){
   gsap.set(".line-inner",{yPercent:112});
@@ -734,7 +793,7 @@ if(hasGsap){
     .to(".stage-copy .lead",{y:0,opacity:1,duration:0.7},0.5);
   gsap.to("#close-net",{rotation:2.5,transformOrigin:"50% 90%",yoyo:true,repeat:-1,duration:2.8,ease:"sine.inOut"});
   if(window.matchMedia("(pointer:fine)").matches){
-    document.querySelectorAll(".btn").forEach(function(b){
+    document.querySelectorAll(".topbar .btn,.stagewrap .btn,.close .btn").forEach(function(b){
       var qx=gsap.quickTo(b,"x",{duration:0.3,ease:"power3"});
       var qy=gsap.quickTo(b,"y",{duration:0.3,ease:"power3"});
       b.addEventListener("pointermove",function(e){
